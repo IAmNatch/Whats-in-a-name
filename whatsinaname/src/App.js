@@ -29,7 +29,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Nameform checkName={this.nameCheck} /> <br />
+        <Nameform checkName={this.nameCheck} /> 
         <div>
         <Condensedname conName={this.state.condensedName} cleName={this.clearName} displayCN={this.state.displayCondensedname}/> <br />
         </div>
