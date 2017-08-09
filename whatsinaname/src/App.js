@@ -4,8 +4,6 @@ import './App.css'
 
 const alphanumeric = 'abcdefghijklmnopqrstuvwxyz0123456789'
 
-
-
 class App extends Component {
 
   constructor() {
@@ -31,9 +29,9 @@ class App extends Component {
       <div className="App">
         <Nameform checkName={this.nameCheck} /> <br />
         <div>
-        <Condensedname conName={this.state.condensedName} cleName={this.clearName} displayCN={this.state.displayCondensedname}/> <br />
+        <Condensedname conName={this.state.condensedName} clearName={this.clearName} displayCN={this.state.displayCondensedname}/> <br />
         </div>
-        <Icons />
+        <Icons/>
       </div>
     )
   }
