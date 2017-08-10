@@ -1,79 +1,131 @@
 const axios = require ('axios');
 const cheerio = require('cheerio');
+var bodyParser = require('body-parser');
 
-// Band camp
-let name = 'badbadnotgood'
-let scrapeURL = 'https://' + name + '.bandcamp.com'
+var express = require('express');
+var app = express();
 
-axios.get(scrapeURL)
-.then(result => {
-    let $ = cheerio.load(result.data);
-    let b = $('#signupform h3')
-    let btext = b.text();
-    let btest = btext.includes('sign up');
+app.use(bodyParser.json());
 
-    if  (btest) {
-        console.log("TRY AGAIN!");
-    }
-    else {
-        console.log("BandCamp: Your artist name is available!")
-    }
-}).catch(error => {
-    console.log('An error has occured!')
+app.listen(8080, function() {
+    console.log('Server is running!');
 });
 
+app.get('/name/:nameID', function(req, res) {
+    let name = req.params.nameID;
+
+    function check(name, res) {
+        console.log('Check function has run!');
+        bandCamp(name, res);
+    }
+
+    check(name, res);
+
+    // res.send(name);
+});
+
+// Band camp
+
+function bandCamp (name, res) {
+    let scrapeURL = 'https://' + name + '.bandcamp.com';
+
+    axios.get(scrapeURL)
+        .then(result => {
+            let $ = cheerio.load(result.data);
+            let b = $('#signupform h3');
+            let btext = b.text();
+            let btest = btext.includes('sign up');
+            let results = {}
+
+            if  (btest) {
+            // If the B test includes sign up, return false. It's not available.
+                console.log('bandCamp: false');
+                results.bandcamp = false;
+                soundCloud(name, res, results)
+            }
+            else {
+            // If the B test does NOT include.
+                console.log('bandCamp: true');
+                results.bandcamp = true;
+                soundCloud(name, res, results)
+            }
+        }).catch(error => {
+            console.log('An error has occured!');
+        });
+}
+
+
 //soundcloud
-let soundCloudName= 'iamamonster'
-let SscrapeURL= 'https://soundcloud.com/' + soundCloudName;
+function soundCloud(name, res, results) {
+    let scrapeURL= 'https://soundcloud.com/' + name;
 
-axios.get(SscrapeURL) 
-.then(result => {
-    console.log("SoundCloud: Your artist is NOT available.")
-})
-.catch(error => {
-    if (error.request.res.statusCode) {
-        console.log('SoundCloud: Your artist name is available!')
-    }
-    else {
-         console.log(error.response.data);
-         console.log(error.response.status);
-         console.log(error.response.headers);
-    }
-})
+    axios.get(scrapeURL)
+        .then(result => {
+            console.log('soundcloud: true');
+            results.soundcloud = true;
+            youTube(name, res, results);
+        })
+        .catch(error => {
+            if (error.request.res.statusCode) {
+                console.log('soundcloud: false');
+                results.soundcloud = false;
+                youTube(name, res, results);
+            }
+            else {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
+        });
+}
 
-//youtube 
-let youTubeName= 'cats'
-let youTubeScrape= 'https://www.youtube.com/user/' + youTubeName; 
+//youtube
+function youTube (name, res, results){
+    let youTubeScrape= 'https://www.youtube.com/user/' + name;
+    axios.get(youTubeScrape)
+        .then ((result, reject) => {
+            console.log('youtube: true');
+            results.youtube = true;
+            faceBook(name, res, results);
+        })
+        .catch (error => {
+            if (error.request.res.statusCode){
+                console.log('youtube: false');
+                results.youtube = false;
+                faceBook(name, res, results);
+            } else {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            }
+        });
+}
+//facebook
 
-axios.get(youTubeScrape)
-.then (result => {
-    console.log("YouTube: Your artist is NOT available.")
-})
-.catch (error => {
-    if (error.request.res.statusCode){
-        console.log("Youtube: Your artist name is available!")
-    } else {
-        console.log(error.response.data);
-         console.log(error.response.status);
-         console.log(error.response.headers);
-    }
-})
+function faceBook (name, res, results){
+    let facebookNameUrl = 'http://graph.facebook.com/' + name;
 
-//facebook 
+    axios.get(facebookNameUrl)
+        .then(result => {
 
-let facebookName = 'wildcatss'
-let facebookNameUrl = 'http://graph.facebook.com/' + facebookName;
+        }).catch ((error) =>{
+            let response = error.response.data.error.message;
+            let responseResult = response.includes('exist');
 
-axios.get(facebookNameUrl) 
-.then(result => {
+            if (responseResult) {
+                console.log('facebok: ' + false);
+                results.facebook = false;
+                toFrontEnd(res, results);
 
-}).catch ((error) =>{
-    let response = error.response.data.error.message
-    let responseResult = response.includes('required')
-    if (responseResult) {
-        console.log("Facebook: Sorry, your URL is taken!")
-    }
-    else {
-        console.log("Facebook: Your URL is available! ")
-    }
-})
+            }
+            else {
+                console.log('facebook: ' + true);
+                results.facebook = true;
+                toFrontEnd(res, results);
+            }
+        });
+}
+
+function toFrontEnd (res, results) {
+    res.send(results);
+}
