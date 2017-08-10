@@ -7,11 +7,19 @@ var app = express();
 
 app.use(bodyParser.json());
 
+app.use((req, res, next)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+    res.setHeader('Access-Control-Allow-Credentials', true)
+    next()
+})
+
 app.listen(8080, function() {
     console.log('Server is running!');
 });
 
-app.get('/name/:nameID', function(req, res) {
+app.all('/name/:nameID', function(req, res) {
     let name = req.params.nameID;
 
     function check(name, res) {
@@ -35,19 +43,19 @@ function bandCamp (name, res) {
             let b = $('#signupform h3');
             let btext = b.text();
             let btest = btext.includes('sign up');
-            let results = {}
+            let results = {};
 
             if  (btest) {
             // If the B test includes sign up, return false. It's not available.
                 console.log('bandCamp: false');
                 results.bandcamp = false;
-                soundCloud(name, res, results)
+                soundCloud(name, res, results);
             }
             else {
             // If the B test does NOT include.
                 console.log('bandCamp: true');
                 results.bandcamp = true;
-                soundCloud(name, res, results)
+                soundCloud(name, res, results);
             }
         }).catch(error => {
             console.log('An error has occured!');

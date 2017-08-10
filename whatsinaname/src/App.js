@@ -31,22 +31,21 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Nameform checkName={this.nameCheck} displaySB={this.state.displaySearchbar} />
-        <div>
-        <Condensedname conName={this.state.condensedName} clearName={this.clearName} displayCN={this.state.displayCondensedname}/> <br />
-        </div>
-        <Icons/>
-          <Condensedname conName={this.state.condensedName} seaName={this.searchName} cleName={this.clearName} displayCN={this.state.displayCondensedname} /> <br />
-        </div>
-        <Icons />
-        <Domainname domName={this.state.domainName} />
-        <Facebook facName={this.state.facebookName} />
-        <Twitter twiName={this.state.twitterName} />
-        <Instagram insName={this.state.instagramName} />
-        <Youtube youName={this.state.youtubeName} />
-        <Soundcloud souName={this.state.soundcloudName} />
-        <Bandcamp banName={this.state.bandcampName} />
-      </div>
+            <div>
+                <Nameform checkName={this.nameCheck} displaySB={this.state.displaySearchbar} />
+                <div>
+                    <Condensedname conName={this.state.condensedName} seaName={this.searchName} cleName={this.clearName} displayCN={this.state.displayCondensedname} /> <br />
+                </div>
+            </div>
+          <Icons/>
+          <Domainname domName={this.state.domainName} />
+          <Facebook facName={this.state.facebookName} />
+          <Twitter twiName={this.state.twitterName} />
+          <Instagram insName={this.state.instagramName} />
+          <Youtube youName={this.state.youtubeName} />
+          <Soundcloud souName={this.state.soundcloudName} />
+          <Bandcamp banName={this.state.bandcampName} />
+    </div>
     )
   }
 
@@ -85,16 +84,23 @@ class App extends Component {
   }
 
   searchName() {
+    let conName = this.state.condensedName;
+    let nameString = conName.join('');
     this.setState({
-      domainName: this.state.condensedName,
-      facebookName: this.state.condensedName,
-      twitterName: this.state.condensedName,
-      youtubeName: this.state.condensedName,
-      soundcloudName: this.state.condensedName,
-      bandcampName: this.state.condensedName,
-      instagramName: this.state.condensedName,
+    //   domainName: this.state.condensedName,
+    //   facebookName: this.state.condensedName,
+    //   twitterName: this.state.condensedName,
+    //   youtubeName: this.state.condensedName,
+    //   soundcloudName: this.state.condensedName,
+    //   bandcampName: this.state.condensedName,
+    //   instagramName: this.state.condensedName,
       displaySearchbar: false
     })
+    axios.post('http://localhost:8080/name/' + nameString, function(req, res) {
+    }).then(result => {
+        console.log("I have run!");
+        console.log(result.data);
+    });
   }
 
   clearName() {
