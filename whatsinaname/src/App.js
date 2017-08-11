@@ -169,7 +169,7 @@ class Icons extends Component {
       <div>
         {/* <button className={this.props.results.domainName ? 'notavailable' : 'available'}>Website</button> */}
         {/* <button className={this.props.results.facebook ? 'notavailable' : 'available'}>Facebook</button> */}
-        <div id='circlebutton' className={this.props.defaultButton ? 'standard' : this.props.results.facebook ? 'notavailable' : 'available'}>F</div>
+        <div id='circlebutton' className={this.props.default ? 'standard' : this.props.results.facebook ? 'notavailable' : 'available'}>F</div>
         {/* <button className={this.props.results.twitter ? 'notavailable' : 'available'}>Twitter</button> */}
         {/* <button className={this.props.results.youtube ? 'notavailable' : 'available'}>YouTube</button> */}
         <div id='circlebutton' className={this.props.results.youtube ? 'notavailable' : 'available'}>Y</div>
