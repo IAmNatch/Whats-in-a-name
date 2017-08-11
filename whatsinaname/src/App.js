@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
+import axios from 'axios'
 
 
 const alphanumeric = 'abcdefghijklmnopqrstuvwxyz0123456789'
@@ -9,27 +10,59 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-      name: [],
-      condensedName: [],
-      domainName: [],
-      facebookName: [],
-      twitterName: [],
-      youtubeName: [],
-      soundcloudName: [],
-      bandcampName: [],
-      instagramName: [],
-      displayCondensedname: false,
-      displaySearchbar: true
+        name: [],
+        condensedName: [],
+        domainName: [],
+        facebookName: [],
+        twitterName: [],
+        youtubeName: [],
+        soundcloudName: [],
+        bandcampName: [],
+        instagramName: [],
+        displayCondensedname: false,
+        displaySearchbar: true,
+        results: {youtube: undefined, facebook: undefined, bandcamp: undefined, soundcloud: undefined}
     }
-    this.nameCheck = this.nameCheck.bind(this)
-    this.clearName = this.clearName.bind(this)
-    this.searchName = this.searchName.bind(this)
+    this.nameCheck = this.nameCheck.bind(this);
+    this.clearName = this.clearName.bind(this);
+    this.searchName = this.searchName.bind(this);
+    this.processResults = this.processResults.bind(this);
     // this.condenseName = this.condenseName.bind(this)
   }
+
+    searchName() {
+      let conName = this.state.condensedName;
+      let nameString = conName.join('');
+      this.setState({
+          //   domainName: this.state.condensedName,
+          //   facebookName: this.state.condensedName,
+          //   twitterName: this.state.condensedName,
+          //   youtubeName: this.state.condensedName,
+          //   soundcloudName: this.state.condensedName,
+          //   bandcampName: this.state.condensedName,
+          //   instagramName: this.state.condensedName,
+          displaySearchbar: false
+      });
+      axios.post('http://localhost:8080/name/' + nameString, function(req, res) {
+      }).then((result) => {
+          this.processResults(result.data);
+      });
+  }
+
+
+    processResults(data) {
+        console.log('I have run!');
+        this.setState({
+            results: data
+        })
+        console.log('state is displayed below');
+        console.log(this.state.results);
+    }
 
   render() {
     return (
       <div className="App">
+<<<<<<< HEAD
         <Nameform checkName={this.nameCheck} displaySB={this.state.displaySearchbar} />
         <div>
         <Condensedname conName={this.state.condensedName} clearName={this.clearName} displayCN={this.state.displayCondensedname}/> <br />
@@ -46,6 +79,23 @@ class App extends Component {
         <Soundcloud souName={this.state.soundcloudName} />
         <Bandcamp banName={this.state.bandcampName} />
       </div>
+=======
+            <div>
+                <Nameform checkName={this.nameCheck} displaySB={this.state.displaySearchbar} />
+                <div>
+                    <Condensedname conName={this.state.condensedName} seaName={this.searchName} cleName={this.clearName} displayCN={this.state.displayCondensedname} /> <br />
+                </div>
+            </div>
+          <Icons results={this.state.results}/>
+          <Domainname domName={this.state.domainName} />
+          <Facebook facName={this.state.facebookName} />
+          <Twitter twiName={this.state.twitterName} />
+          <Instagram insName={this.state.instagramName} />
+          <Youtube youName={this.state.youtubeName} />
+          <Soundcloud souName={this.state.soundcloudName} />
+          <Bandcamp banName={this.state.bandcampName} />
+    </div>
+>>>>>>> faada1a708d1433ecfb9a83d7fbb2c2105536114
     )
   }
 
@@ -83,18 +133,9 @@ class App extends Component {
     // document.getElementById('bandname').value = ''
   }
 
-  searchName() {
-    this.setState({
-      domainName: this.state.condensedName,
-      facebookName: this.state.condensedName,
-      twitterName: this.state.condensedName,
-      youtubeName: this.state.condensedName,
-      soundcloudName: this.state.condensedName,
-      bandcampName: this.state.condensedName,
-      instagramName: this.state.condensedName,
-      displaySearchbar: false
-    })
-  }
+
+
+
 
   clearName() {
     this.setState({
@@ -146,10 +187,10 @@ class Icons extends Component {
         <button>Website</button>
         <button>Facebook</button>
         <button>Twitter</button>
-        <button>YouTube</button>
-        <button>Soundcloud</button>
-        <button>Instagram</button>
-        <button>Bandcamp</button>
+        <button className={this.props.results.youtube}>YouTube</button>
+        <button className={this.props.results.soundcloud}>Soundcloud</button>
+        <button className={this.props.results.instagram}>Instagram</button>
+        <button className={this.props.results.bandcamp}>Bandcamp</button>
       </div>
     )
   }
