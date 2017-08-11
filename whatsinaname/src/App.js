@@ -21,6 +21,7 @@ class App extends Component {
         instagramName: [],
         displayCondensedname: false,
         displaySearchbar: true,
+        defaultButton: true,
         results: {youtube: undefined, facebook: undefined, bandcamp: undefined, soundcloud: undefined}
     }
     this.nameCheck = this.nameCheck.bind(this);
@@ -30,34 +31,6 @@ class App extends Component {
     // this.condenseName = this.condenseName.bind(this)
   }
 
-    searchName() {
-      let conName = this.state.condensedName;
-      let nameString = conName.join('');
-      this.setState({
-          //   domainName: this.state.condensedName,
-          //   facebookName: this.state.condensedName,
-          //   twitterName: this.state.condensedName,
-          //   youtubeName: this.state.condensedName,
-          //   soundcloudName: this.state.condensedName,
-          //   bandcampName: this.state.condensedName,
-          //   instagramName: this.state.condensedName,
-          displaySearchbar: false
-      });
-      axios.post('http://localhost:8080/name/' + nameString, function(req, res) {
-      }).then((result) => {
-          this.processResults(result.data);
-      });
-  }
-
-
-    processResults(data) {
-        console.log('I have run!');
-        this.setState({
-            results: data
-        })
-        console.log('state is displayed below');
-        console.log(this.state.results);
-    }
 
   render() {
     return (
@@ -68,14 +41,14 @@ class App extends Component {
                     <Condensedname conName={this.state.condensedName} seaName={this.searchName} cleName={this.clearName} displayCN={this.state.displayCondensedname} /> <br />
                 </div>
             </div>
-          <Icons results={this.state.results}/>
-          <Domainname domName={this.state.domainName} />
+          <Icons results={this.state.results} default={this.state.defaultButton}/>
+          {/* <Domainname domName={this.state.domainName} />
           <Facebook facName={this.state.facebookName} />
           <Twitter twiName={this.state.twitterName} />
           <Instagram insName={this.state.instagramName} />
           <Youtube youName={this.state.youtubeName} />
           <Soundcloud souName={this.state.soundcloudName} />
-          <Bandcamp banName={this.state.bandcampName} />
+          <Bandcamp banName={this.state.bandcampName} /> */}
     </div>
     )
   }
@@ -115,6 +88,35 @@ class App extends Component {
   }
 
 
+    searchName() {
+      let conName = this.state.condensedName;
+      let nameString = conName.join('');
+      this.setState({
+          //   domainName: this.state.condensedName,
+          //   facebookName: this.state.condensedName,
+          //   twitterName: this.state.condensedName,
+          //   youtubeName: this.state.condensedName,
+          //   soundcloudName: this.state.condensedName,
+          //   bandcampName: this.state.condensedName,
+          //   instagramName: this.state.condensedName,
+          displaySearchbar: false
+      });
+      axios.post('http://localhost:8080/name/' + nameString, function(req, res) {
+      }).then((result) => {
+          this.processResults(result.data);
+      });
+  }
+
+
+    processResults(data) {
+        console.log('I have run!');
+        this.setState({
+            results: data,
+            defaultButton: false
+        })
+        console.log('state is displayed below');
+        console.log(this.state.results);
+    }
 
 
 
@@ -165,143 +167,148 @@ class Icons extends Component {
   render() {
     return (
       <div>
-        <button>Website</button>
-        <button>Facebook</button>
-        <button>Twitter</button>
-        <button className={this.props.results.youtube}>YouTube</button>
-        <button className={this.props.results.soundcloud}>Soundcloud</button>
-        <button className={this.props.results.instagram}>Instagram</button>
-        <button className={this.props.results.bandcamp}>Bandcamp</button>
+        {/* <button className={this.props.results.domainName ? 'notavailable' : 'available'}>Website</button> */}
+        {/* <button className={this.props.results.facebook ? 'notavailable' : 'available'}>Facebook</button> */}
+        <div id='circlebutton' className={this.props.defaultButton ? 'standard' : this.props.results.facebook ? 'notavailable' : 'available'}>F</div>
+        {/* <button className={this.props.results.twitter ? 'notavailable' : 'available'}>Twitter</button> */}
+        {/* <button className={this.props.results.youtube ? 'notavailable' : 'available'}>YouTube</button> */}
+        <div id='circlebutton' className={this.props.results.youtube ? 'notavailable' : 'available'}>Y</div>
+        {/* <button className={this.props.results.soundcloud ? 'notavailable' : 'available'}>Soundcloud</button> */}
+        <div id='circlebutton' className={this.props.results.soundcloud ? 'notavailable' : 'available'}>S</div>
+        {/* <button className={this.props.results.instagram ? 'notavailable' : 'available'}>Instagram</button> */}
+        {/* <button className={this.props.results.bandcamp ? 'notavailable' : 'available'}>Bandcamp</button> */}
+        <div id='circlebutton' className={this.props.results.bandcamp ? 'notavailable' : 'available'}>B</div>
+
       </div>
     )
   }
 }
 
-class Domainname extends Component {
-  render() {
-    return (
-      <div>
-        Domain: {this.props.domName}
-      </div>
-    )
-  }
-  domainnameRequirements() {
-    let domName = this.props.domName
-    if (domName.length > 63) {
-      return
-      <div>
-        Domainname Requirements
-        </div>
-    } else {
-      return
-      <div>
-        Domain: {this.props.domName}
-      </div>
-    }
-  }
-}
+// class Domainname extends Component {
+//   render() {
+//     return (
+//       <div>
+//         Domain: {this.props.domName}
+//       </div>
+//     )
+//   }
+//   domainnameRequirements() {
+//     let domName = this.props.domName
+//     if (domName.length > 63) {
+//       return
+//       <div>
+//         Domainname Requirements
+//         </div>
+//     } else {
+//       return
+//       <div>
+//         Domain: {this.props.domName}
+//       </div>
+//     }
+//   }
+// }
 
-class Facebook extends Component {
-  render() {
-    return (
-      <div>
-        Facebook: {this.props.facName}
-      </div>
-    )
-  }
-  facebookRequirements() {
-    let facName = this.props.facName
-    if (facName.length > 50) {
-      return
-      <div>
-        Facebook Requirements
-        </div>
-    } else {
-      return
-      <div>
-        Facebook: {this.props.facName}
-      </div>
-    }
-  }
-}
+// class Facebook extends Component {
+//   render() {
+//     return (
+//       <div>
+//         Facebook: {this.props.facName}
+//       </div>
+//     )
+//   }
+//   facebookRequirements() {
+//     let facName = this.props.facName
+//     if (facName.length > 50) {
+//       return
+//       <div>
+//         Facebook Requirements
+//         </div>
+//     } else {
+//       return
+//       <div>
+//         Facebook: {this.props.facName}
+//       </div>
+//     }
+//   }
+// }
 
-class Twitter extends Component {
-  render() {
-    return (
-      <div>
-        Twitter: {this.props.twiName}
-      </div>
-    )
-  }
-  twitterRequirements() {
-    let twiName = this.props.twiName
-    if (twiName.length > 15) {
-      return
-      <div>
-        Twitter Requirements
-        </div>
-    } else {
-      return
-      <div>
-        Twitter: {this.props.twiName}
-      </div>
-    }
-  }
-}
+// class Twitter extends Component {
+//   render() {
+//     return (
+//       <div>
+//         Twitter: {this.props.twiName}
+//       </div>
+//     )
+//   }
+//   twitterRequirements() {
+//     let twiName = this.props.twiName
+//     if (twiName.length > 15) {
+//       return
+//       <div>
+//         Twitter Requirements
+//         </div>
+//     } else {
+//       return
+//       <div>
+//         Twitter: {this.props.twiName}
+//       </div>
+//     }
+//   }
+// }
 
-class Instagram extends Component {
-  render() {
-    return (
-      <div>
-        Instagram: {this.props.insName}
-      </div>
-    )
-  }
-  instagramRequirements() {
-    let insName = this.props.insName
-    if (insName.length > 30) {
-      return
-      <div>
-        Instagram Requirements
-        </div>
-    } else {
-      return
-      <div>
-        Instagram: {this.props.insName}
-      </div>
-    }
-  }
-}
+// class Instagram extends Component {
+//   render() {
+//     return (
+//       <div>
+//         Instagram: {this.props.insName}
+//       </div>
+//     )
+//   }
+//   instagramRequirements() {
+//     let insName = this.props.insName
+//     if (insName.length > 30) {
+//       return
+//       <div>
+//         Instagram Requirements
+//         </div>
+//     } else {
+//       return
+//       <div>
+//         Instagram: {this.props.insName}
+//       </div>
+//     }
+//   }
+// }
 
-class Youtube extends Component {
-  render() {
-    return (
-      <div>
-        Youtube: {this.props.youName}
-      </div>
-    )
-  }
-}
+// class Youtube extends Component {
+//   render() {
+//     return (
+//       <div>
+//         Youtube: {this.props.youName}
+//       </div>
+//     )
+//   }
+// }
 
-class Bandcamp extends Component {
-  render() {
-    return (
-      <div>
-        Bandcamp: {this.props.banName}
-      </div>
-    )
-  }
-}
+// class Bandcamp extends Component {
+//   render() {
+//     return (
+//       <div>
+//         Bandcamp: {this.props.banName}
+//       </div>
+//     )
+//   }
+// }
 
-class Soundcloud extends Component {
-  render() {
-    return (
-      <div>
-        Soundcloud: {this.props.souName}
-      </div>
-    )
-  }
-}
+// class Soundcloud extends Component {
+//   render() {
+//     return (
+//       <div>
+//         Soundcloud: {this.props.souName}
+//       </div>
+//     )
+//   }
+// }
 
 // class Condensedname extends Component {
 //   render() {
