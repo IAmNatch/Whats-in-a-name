@@ -35,6 +35,24 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+<<<<<<< HEAD
+        <Nameform checkName={this.nameCheck} displaySB={this.state.displaySearchbar} />
+        <div>
+        <Condensedname conName={this.state.condensedName} clearName={this.clearName} displayCN={this.state.displayCondensedname}/> <br />
+        </div>
+        <Icons/>
+          <Condensedname conName={this.state.condensedName} seaName={this.searchName} cleName={this.clearName} displayCN={this.state.displayCondensedname} /> <br />
+        </div>
+        <Icons />
+        <Domainname domName={this.state.domainName} />
+        <Facebook facName={this.state.facebookName} />
+        <Twitter twiName={this.state.twitterName} />
+        <Instagram insName={this.state.instagramName} />
+        <Youtube youName={this.state.youtubeName} />
+        <Soundcloud souName={this.state.soundcloudName} />
+        <Bandcamp banName={this.state.bandcampName} />
+      </div>
+=======
             <div>
                 <Nameform checkName={this.nameCheck} displaySB={this.state.displaySearchbar} />
                 <div>
@@ -50,6 +68,7 @@ class App extends Component {
           <Soundcloud souName={this.state.soundcloudName} />
           <Bandcamp banName={this.state.bandcampName} /> */}
     </div>
+>>>>>>> faada1a708d1433ecfb9a83d7fbb2c2105536114
     )
   }
 
