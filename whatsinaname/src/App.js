@@ -32,11 +32,9 @@ class App extends Component {
       <div className="App">
         <Nameform checkName={this.nameCheck} displaySB={this.state.displaySearchbar} />
         <div>
-<<<<<<< HEAD
         <Condensedname conName={this.state.condensedName} clearName={this.clearName} displayCN={this.state.displayCondensedname}/> <br />
         </div>
         <Icons/>
-=======
           <Condensedname conName={this.state.condensedName} seaName={this.searchName} cleName={this.clearName} displayCN={this.state.displayCondensedname} /> <br />
         </div>
         <Icons />
@@ -47,7 +45,6 @@ class App extends Component {
         <Youtube youName={this.state.youtubeName} />
         <Soundcloud souName={this.state.soundcloudName} />
         <Bandcamp banName={this.state.bandcampName} />
->>>>>>> 4c76dece2e01ae80b5f62bd36ee9b95812809b29
       </div>
     )
   }
