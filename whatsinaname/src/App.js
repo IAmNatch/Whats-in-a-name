@@ -131,7 +131,8 @@ class App extends Component {
       bandcampName: [],
       instagramName: [],
       displayCondensedname: false,
-      displaySearchbar: true
+      displaySearchbar: true,
+      defaultButton: true
     })
     document.getElementById('bandname').value = ''
   }
@@ -166,19 +167,18 @@ class Condensedname extends Component {
 class Icons extends Component {
   render() {
     return (
-      <div>
+      <div className='App'>
         {/* <button className={this.props.results.domainName ? 'notavailable' : 'available'}>Website</button> */}
         {/* <button className={this.props.results.facebook ? 'notavailable' : 'available'}>Facebook</button> */}
         <div id='circlebutton' className={this.props.default ? 'standard' : this.props.results.facebook ? 'notavailable' : 'available'}>F</div>
         {/* <button className={this.props.results.twitter ? 'notavailable' : 'available'}>Twitter</button> */}
         {/* <button className={this.props.results.youtube ? 'notavailable' : 'available'}>YouTube</button> */}
-        <div id='circlebutton' className={this.props.results.youtube ? 'notavailable' : 'available'}>Y</div>
+        <div id='circlebutton' className={this.props.default ? 'standard' : this.props.results.youtube ? 'notavailable' : 'available'}>Y</div>
         {/* <button className={this.props.results.soundcloud ? 'notavailable' : 'available'}>Soundcloud</button> */}
-        <div id='circlebutton' className={this.props.results.soundcloud ? 'notavailable' : 'available'}>S</div>
+        <div id='circlebutton' className={this.props.default ? 'standard' : this.props.results.soundcloud ? 'notavailable' : 'available'}>S</div>
         {/* <button className={this.props.results.instagram ? 'notavailable' : 'available'}>Instagram</button> */}
         {/* <button className={this.props.results.bandcamp ? 'notavailable' : 'available'}>Bandcamp</button> */}
-        <div id='circlebutton' className={this.props.results.bandcamp ? 'notavailable' : 'available'}>B</div>
-
+        <div id='circlebutton' className={this.props.default ? 'standard' : this.props.results.bandcamp ? 'notavailable' : 'available'}>B</div>
       </div>
     )
   }
