@@ -15,7 +15,7 @@ app.use((req, res, next)=>{
     next()
 })
 
-app.listen(3001, function() {
+app.listen(8080, function() {
     console.log('Server is running!');
 });
 
