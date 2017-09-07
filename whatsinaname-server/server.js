@@ -19,22 +19,29 @@ app.listen(8080, function() {
     console.log('Server is running!');
 });
 
-app.all('/name/:nameID', function(req, res) {
+app.get('/bandcamp/name/:nameID', (req, res) => {
     let name = req.params.nameID;
+    bandcamp(name, res);
+});
 
-    function check(name, res) {
-        console.log('Check function has run!');
-        bandCamp(name, res);
-    }
+app.get('/facebook/name/:nameID', (req, res) => {
+    let name = req.params.nameID;
+    facebook(name, res);
+});
 
-    check(name, res);
+app.get('/soundcloud/name/:nameID', (req, res) => {
+    let name = req.params.nameID;
+    soundcloud(name, res);
+});
 
-    // res.send(name);
+app.get('/bandcamp/name/:nameID', (req, res) => {
+    let name = req.params.nameID;
+    bandcamp(name, res);
 });
 
 // Band camp
 
-function bandCamp (name, res) {
+function bandcamp (name, res) {
     let scrapeURL = 'https://' + name + '.bandcamp.com';
 
     axios.get(scrapeURL)
@@ -48,36 +55,36 @@ function bandCamp (name, res) {
             if  (btest) {
             // If the B test includes sign up, return false. It's not available.
                 console.log('bandCamp: false');
-                results.bandcamp = false;
-                soundCloud(name, res, results);
+                results = false;
+                res.send(results)
             }
             else {
             // If the B test does NOT include.
                 console.log('bandCamp: true');
-                results.bandcamp = true;
-                soundCloud(name, res, results);
+                results = true;
+                res.send(results)
             }
         }).catch(error => {
-            console.log('An error has occured!');
+            console.log('An error has occured in bandcamp');
         });
 }
 
 
 //soundcloud
-function soundCloud(name, res, results) {
+function soundcloud(name, res, results) {
     let scrapeURL= 'https://soundcloud.com/' + name;
 
     axios.get(scrapeURL)
         .then(result => {
             console.log('soundcloud: true');
-            results.soundcloud = true;
-            youTube(name, res, results);
+            results = true;
+            res.send(results);
         })
         .catch(error => {
             if (error.request.res.statusCode) {
                 console.log('soundcloud: false');
-                results.soundcloud = false;
-                youTube(name, res, results);
+                results = false;
+                res.send(results);
             }
             else {
                 console.log(error.response.data);
@@ -88,19 +95,19 @@ function soundCloud(name, res, results) {
 }
 
 //youtube
-function youTube (name, res, results){
+function youtube (name, res, results){
     let youTubeScrape= 'https://www.youtube.com/user/' + name;
     axios.get(youTubeScrape)
         .then ((result, reject) => {
             console.log('youtube: true');
-            results.youtube = true;
-            faceBook(name, res, results);
+            results = true;
+            res.send(result);
         })
         .catch (error => {
             if (error.request.res.statusCode){
                 console.log('youtube: false');
-                results.youtube = false;
-                faceBook(name, res, results);
+                results = false;
+                res.send(results)
             } else {
                 console.log(error.response.data);
                 console.log(error.response.status);
@@ -110,7 +117,7 @@ function youTube (name, res, results){
 }
 //facebook
 
-function faceBook (name, res, results){
+function facebook (name, res, results){
     let facebookNameUrl = 'http://graph.facebook.com/' + name;
 
     axios.get(facebookNameUrl)
@@ -122,18 +129,13 @@ function faceBook (name, res, results){
 
             if (responseResult) {
                 console.log('facebok: ' + false);
-                results.facebook = false;
-                toFrontEnd(res, results);
-
+                result = false;
+                res.send(result)
             }
             else {
                 console.log('facebook: ' + true);
-                results.facebook = true;
-                toFrontEnd(res, results);
+                result = true;
+                res.send(result);
             }
         });
-}
-
-function toFrontEnd (res, results) {
-    res.send(results);
 }
